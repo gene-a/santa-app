@@ -17,6 +17,10 @@ app.use(express.json())
 app.use(urlencoded({ extended: false }))
 app.use(express.static('public'))
 
+app.post('/api', (req, res) => {
+  res.send('hello')
+})
+
 app.post(apiConfig.WISH_API.POST_WISH, async (request, response) => {
   try {
     const { user, userAddress, wish } = request.body
@@ -36,7 +40,7 @@ app.get('/', (request, response) => {
 })
 
 // listen for requests :)
-const listener = app.listen(process.env.PORT || 3000, function () {
+const listener = app.listen(3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 
   // Initialize the email sender
