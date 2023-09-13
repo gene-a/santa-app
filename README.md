@@ -34,9 +34,6 @@
 		- From my understanding we now just have index.js which is bundled by Vite
 
 # Personal Notes:
-Thank you for giving me the opportunity to work on this it was a lot of fun learning Node, NPM, and a bit of React!
 I am a C# developer and have used the .NET framework extensively. I have no specific JS framework that I use but am fine with Vanilla JS.
 I tried my best to translate the knowledge I have from ASP .NET to attempt to implement html rendering on the server side and serve up the API.
-This was quite a challenge as I had to learn Node and React in a day or so as the assignment was given during a time I was away from Tokyo. 
-
-It was quite enjoyable.
+It was quite enjoyable but this was quite a challenge as I had to learn Node and React in a day or so as the assignment was given during a time I was away from Tokyo. 

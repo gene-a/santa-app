@@ -13,7 +13,7 @@ const wishesMap = new Map()
  * @param {string} wish - The wish content.
  * @returns {Object} - The created wish object.
  */
-const createWish = function (user, wish) {
+const createWish = function (user, userAddress, wish) {
   return {
     user: user,
     userAddress: userAddress,

@@ -1,34 +1,21 @@
 // server.js
 
 // init project
-const express = require('express')
-const morgan = require('morgan')
+import express, { json, urlencoded } from 'express'
+import morgan from 'morgan'
+import { join } from 'path'
+import { santaController } from './src/server/controllers/santa-controller.js'
+import { apiConfig } from './config/api-config.js'
+import { emailSender } from './src/server/services/email-sender.js'
+
+// Starting up express
 const app = express()
-const path = require('path')
-const connect = require('connect')
-const {
-  santaController,
-} = require('./src/server/controllers/santa-controller.js')
-const { apiConfig } = require('./config/api-config.js')
-const { emailSender } = require('./src/server/services/email-sender.js')
 
 // Middleware
-const connectApp = connect()
-connectApp.use((req, res, next) => {
-  console.log('Request URL:', req.url)
-  next()
-})
-app.use(connectApp)
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-const loggerFormat =
-  ':method :url :status :res[content-length] - :response-time ms'
-app.use(morgan(loggerFormat))
+app.use(urlencoded({ extended: false }))
 app.use(express.static('public'))
-
-app.post('/something/', async (request, response) => {
-  console.log('something hit')
-})
 
 app.post(apiConfig.WISH_API.POST_WISH, async (request, response) => {
   try {
@@ -44,7 +31,7 @@ app.post(apiConfig.WISH_API.POST_WISH, async (request, response) => {
 })
 
 app.get('/', (request, response) => {
-  response.sendFile(path.join(__dirname, 'dist', 'index.html'))
+  response.sendFile(join(__dirname, 'dist', 'index.html'))
   console.log(response.json(routes))
 })
 

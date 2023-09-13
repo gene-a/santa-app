@@ -87,13 +87,20 @@ function App() {
             if (utils.calculateAge(userProfile.birthdate) <= maxUserAge) {
               // Create the wish
               const wishData = {
-                user: user,
+                user: {
+                  username: user.username,
+                  uid: user.uid,
+                },
                 userAddress: userProfile.address,
-                wish: wish,
+                wish,
               };
 
               // Make a POST request to the wish endpoint
-              const response = await axios.post(apiConfig.WISH_API.POST_WISH, wishData)
+              const response = await axios.post(apiConfig.WISH_API.POST_WISH, wishData, {
+                headers: {
+                  'Content-Type': 'application/json', // Set the content type to JSON
+                },
+              });
               
               // Exit the function if all is good i.e. all conditions are passed and the wish is created
               modalMessage = `Wish successfully created! You must be excited ${userId}! We will be mailing santa soon!`
@@ -141,7 +148,7 @@ function App() {
           onChange={ handleUserIdChange }
         />
 
-        <form method="post" onSubmit={ handleSubmit }>
+        <form id="wishForm" method="post" onSubmit={ handleSubmit }>
           <label htmlFor="wish">what do you want for Christmas?</label>
           <textarea
             name="wish"

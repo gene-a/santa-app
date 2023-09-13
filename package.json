@@ -5,12 +5,11 @@
   "main": "server.js",
   "scripts": {
     "docs": "nodemon -x jsdoc -c config/jsdoc.conf.json -e js,json",
-    "start": "vite --port 3000 --debug"
+    "start": "vite --port 3000 --open --debug"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.0.4",
     "axios": "^1.4.0",
-    "connect": "^3.7.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "morgan": "^1.10.0",
