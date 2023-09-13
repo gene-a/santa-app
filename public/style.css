@@ -59,3 +59,62 @@ footer {
   padding-top: 25px;
   border-top: 1px solid lightgrey;
 }
+
+/* Modal styles (just got a random one from the web)*/
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0, 0, 0, 0.4); /* Overlay background */
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto; /* Center modal on screen */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Set the width of the modal */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 400px; /* Adjust as needed */
+  text-align: center;
+  position: relative;
+}
+
+/* Close button (x) */
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #888;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* OK button */
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Center the button */
+button:active {
+  position: relative;
+  top: 1px;
+}

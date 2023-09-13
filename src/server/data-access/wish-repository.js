@@ -9,12 +9,14 @@ const wishesMap = new Map()
  * Internal function used for the addWish function that inserts into the repo.
  *
  * @param {string} user - The user making the wish.
+ * @param {string} userAddress - The user's address
  * @param {string} wish - The wish content.
  * @returns {Object} - The created wish object.
  */
 const createWish = function (user, wish) {
   return {
     user: user,
+    userAddress: userAddress,
     wish: wish,
     isSent: false,
     timeSentUtc: new Date(0).toISOString(), // Minimum date for new wishes
@@ -25,14 +27,15 @@ const createWish = function (user, wish) {
  * Adds a new wish to the wishes map.
  *
  * @param {string} user - The user making the wish.
+ * @param {string} userAddress - The user's address
  * @param {string} wish - The wish content.
  * @returns {string|null} - The ID of the added wish or null if the addition fails.
  */
-const addWish = function (user, wish) {
+const addWish = function (user, userAddress, wish) {
   const wishId = undefined
   try {
     wishId = v4()
-    wishesMap.set(wishId, createWish(user, wish))
+    wishesMap.set(wishId, createWish(user, userAddress, wish))
   } catch (e) {
     // Log the message and return undefined to the client
     console.error(`Failed to create wish for user ${user}`)
@@ -58,6 +61,15 @@ const getWish = function (id) {
 }
 
 /**
+ * Retrieves all wishes as a Map
+ *
+ * @returns {Object|null} - The retrieved wishes map
+ */
+const getWishesMap = function () {
+  return wishesMap
+}
+
+/**
  * Sets a wish to "sent" by updating the boolean flag to true.
  * Sent time in UTC is also updated to when the function was triggered.
  * @param {string} id - The ID of the wish to update.
@@ -75,6 +87,7 @@ const setWishToSent = function (id) {
 
 export const wishRepo = {
   getWish: getWish,
+  getWishesMap: getWishesMap,
   addWish: addWish,
   setWishToSent: setWishToSent,
 }

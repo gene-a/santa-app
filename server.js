@@ -1,13 +1,14 @@
 // server.js
-// where your node app starts
 
 // init project
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
 const path = require('path')
-const { WISH_API } = require('./config/api-config.js')
-const { postWish } = require('./src/server/controllers/santa-controller.js')
+const {
+  santaController,
+} = require('./src/server/controllers/santa-controller,js')
+const { apiConfig } = require('./config/api-config.js')
 
 // Replaced deprecated body-parser
 app.use(express.json())
@@ -17,15 +18,24 @@ app.use(express.urlencoded({ extended: false }))
 const loggerFormat =
   ':method :url :status :res[content-length] - :response-time ms'
 app.use(morgan(loggerFormat))
-
 app.use(express.static('public'))
+
+app.post(apiConfig.WISH_API.POST_WISH, async (request, response) => {
+  try {
+    const { user, userAddress, wish } = request.body
+    const wishId = await santaController.postWish(user, userAddress, wish)
+
+    // Send the generated wish ID as a response
+    response.json({ wishId })
+  } catch (e) {
+    console.error('Failed to post wish:', e)
+    response.status(500).json({ error: 'Failed to post wish' })
+  }
+})
 
 app.get('/', (request, response) => {
   response.sendFile(path.join(__dirname, 'dist', 'index.html'))
-})
-
-app.get(WISH_API.POST_WISH, (request, response) => {
-  postWish(request)
+  console.log(response.json(routes))
 })
 
 // listen for requests :)

@@ -22,6 +22,7 @@
 - Added JSDocs for functions for documentation
 - Added nodemon to automate documentation generation as necessary, docs are now stored in the docs folder.
   - I've elected not to serve them as I'm assuming the site is for prod use only. Ideally this can be served through the dev portal.
+- Added nodemailer package for the interval mailer
 - Updated vite react plugin
 - Replaced "Request" with Axios because it is apparently deprecated
 - Replaced deprecated body-parser with express

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: controllers/santa-controller.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,45 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: controllers/santa-controller.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { addWish } from '../data-access/wish-repository.js'
 
+/**
+ * Posts a wish for a user.
+ *
+ * @param {string} user - The user for whom the wish is being posted.
+ * @param {string} wish - The wish to be posted.
+ * @returns {Promise&lt;string>} A promise that resolves to the generated wish ID.
+ * @throws {string} If there is an error creating the wish, a rejection with an error message is thrown.
+ */
+const postWish = function (user, wish) {
+  return new Promise((resolve, reject) => {
+    // Store data to in-memory repo
+    const wishId = addWish(user, wish)
 
-    <h3> </h3>
+    if (wishId === null) {
+      reject(`Failed to create wish for user:${user}`)
+    }
 
+    // If wish creation was successful we send back the generated UUID
+    resolve(wishId)
+  })
+}
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+export const santaController = {
+  postWish: postWish,
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

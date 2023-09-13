@@ -1,36 +1,102 @@
+import axios from 'axios'
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { userFetcher } from "./server/services/user-fetcher"
+import { userProfileFetcher } from "./server/services/user-profile-fetcher"
+import { utils } from "./server/services/utils";
+import { apiConfig } from '../config/api-config';
+
 
 function App() {
   // State variables for input fields
-  const [userId, setUserId] = React.useState("");
-  const [wish, setWish] = React.useState("");
-  const [validationMessage, setErrorMessage] = React.useState("");
+  const [userId, setUserId] = React.useState("")
+  const [wish, setWish] = React.useState("")
+  const [validationMessage, setErrorMessage] = React.useState("")
+  const [isModalOpen, setIsModalOpen] = React.useState(false) 
 
   // Validation constraint constants
-  const maxWishLength = 100;
+  const maxWishLength = 100
+  const maxUserAge = 10
+
+  // Trigger the modal
+  const triggerModal = (message) => {
+    setErrorMessage(message)
+    openModal()
+  }
+
+  // Function to open the modal
+  const openModal = () => {
+    setIsModalOpen(true)
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false)
+  };
 
   const handleUserIdChange = (event) => {
-    setUserId(event.target.value);
+    setUserId(event.target.value)
   };
 
   const handleWishChange = (event) => {
-    const newWish = event.target.value;
-    setWish(newWish);
+    const newWish = event.target.value
+    setWish(newWish)
+    let message = ''
 
     // Check if length of wish input has reached 100
     // Even if the input field already has a maxLength attribute for constraints and won't allow more than 100 characters, we put this message to let the user know of the restriction
     if (newWish.length >= maxWishLength) {
-      setErrorMessage('I know you are eager for gifts but know that the wish length should only be 100 characters long!');
-    } else {
-      setErrorMessage(""); // Clear the error message
+      // Set the error message
+      message = 'I know you are eager for gifts but know that the wish length should only be 100 characters long!'
     }
+
+    // Update the error message as necessary
+    setErrorMessage(message)
   };
 
-  const handleSubmit = (event) => {
+  const  handleSubmit = async (event) => {
     // Preventing default submit behavior so we can call the API for validation before submitting
-    event.preventDefault();
+    event.preventDefault()
+
+    // Default error message that is called when:
+        // User profile was not found
+        // User is invalid display
+        // Age is greater than limit
+    let modalMessage = `You can't send wishes if you're not registered or over ${maxUserAge} year(s) old! Sorry. Hohohuhu`
     
+    if (wish && userId && typeof(wish) === 'string' && wish.length <= maxWishLength) {
+      try {
+        // Check if child is registered by first getting the child info via username
+        const user = await userFetcher.getUserByUsername(userId)
+        if (user) {
+          // Now get the user's profile
+          const userProfile = await userProfileFetcher.getUserProfileByUuid(user.uid)
+          if (userProfile) {
+            // Calculate age if they're allowed to send wishes
+            if (utils.calculateAge(userProfile.birthdate) <= maxUserAge) {
+              // Create the wish
+              const wishData = {
+                user: user,
+                userAddress: userProfile.address,
+                wish: wish,
+              };
+
+              // Make a POST request to the wish endpoint
+              const response = await axios.post(window.location.origin + apiConfig.WISH_API.POST_WISH, wishData)
+              
+              // Exit the function if all is good i.e. all conditions are passed and the wish is created
+              modalMessage = `Wish successfully created! You must be excited ${userId}! We will be mailing santa soon!`
+              return response
+            }
+          } 
+        }         
+      } catch (e) {
+        modalMessage = `An error occured while creating the wish...can you try again?`
+      } finally {
+        // Show the modal whether wish creation request was successful or not
+        triggerModal(modalMessage)
+      }
+    }
   };
 
   return (
@@ -46,7 +112,7 @@ function App() {
         <input
           name="userid"
           id="userid"
-          placeholder="charlie.brown"
+          placeholder="Your Username"
           value={userId}
           onChange={ handleUserIdChange }
         />
@@ -78,8 +144,25 @@ function App() {
 
       <div
         className="glitchButton"
-        style={{ position: "fixed", top: "20px", right: "20px" }}
-      ></div>
+        style={{ position: "fixed", top: "20px", right: "20px" }}>
+      </div>
+      {/* Display the modal if isModalOpen is true */}
+      {isModalOpen && (
+        <ErrorModal message={validationMessage} onClose={closeModal} />
+      )}
+    </div>
+  );
+}
+
+// Modal component
+function ErrorModal({ message, onClose }) {
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <span className="close" onClick={onClose}>&times;</span>
+        <p>{message}</p>
+        <button onClick={onClose}>OK</button>
+      </div>
     </div>
   );
 }
