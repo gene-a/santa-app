@@ -2,12 +2,14 @@
 /* called by your view template */
 
 * {
-  box-sizing: border-box;
+  box-sizing: border-box; 
 }
 
 body {
   font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
   margin: 2em;
+  background-color: black;
+  color: white
 }
 
 h1 {
@@ -73,7 +75,8 @@ footer {
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: #1f1e1e;
+  color: rgb(255, 255, 255);
   margin: 10% auto; /* Center modal on screen */
   padding: 20px;
   border: 1px solid #888;

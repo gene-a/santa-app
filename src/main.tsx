@@ -6,7 +6,7 @@ import { userProfileFetcher } from "./server/services/user-profile-fetcher"
 import { utils } from "./server/services/utils";
 import { apiConfig } from '../config/api-config';
 
-
+// Main App
 function App() {
   // State variables for input fields
   const [userId, setUserId] = React.useState("")
@@ -42,10 +42,12 @@ function App() {
     })
   };
 
+  // Username change handler
   const handleUserIdChange = (event) => {
     setUserId(event.target.value)
   };
 
+  // Wish content change handler
   const handleWishChange = (event) => {
     const newWish = event.target.value
     setWish(newWish)
@@ -62,15 +64,16 @@ function App() {
     setErrorMessage(message)
   };
 
+  // Form submit handler
   const  handleSubmit = async (event) => {
-    // Preventing default submit behavior so we can call the API for validation before submitting
+    // Preventing default submit behavior so we can call the API for validation before submitting and other shenanigans
     event.preventDefault()
 
     // Default error message that is called when:
         // User profile was not found
         // User is invalid display
         // Age is greater than limit
-    let modalMessage = `You can't send wishes if you're not registered or over ${maxUserAge} year(s) old! Sorry. Hohohuhu`
+    let modalMessage = `You can't send wishes if you're not registered or over ${maxUserAge} year(s) old! Sorry. From hohoho to huhuhu real quick.`
     
     if (wish && userId && typeof(wish) === 'string' && wish.length <= maxWishLength) {
       try {
@@ -127,7 +130,7 @@ function App() {
       </header>
 
       <main>
-        <p className="bold">Ho ho ho, what you want for Christmas?</p>
+        <p className="bold">Ho ho ho, what do you want for Christmas?</p>
 
         <label htmlFor="userid">who are you?</label>
         <input
@@ -146,7 +149,7 @@ function App() {
             rows={10}
             cols={45}
             maxLength={maxWishLength}
-            placeholder="Gifts!"
+            placeholder="List the gifts you want here!"
             value={wish}
             onChange={ handleWishChange }>
           </textarea>
