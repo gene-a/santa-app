@@ -61,3 +61,7 @@ const initEmailSender = function () {
     })
   }, intervalInMs)
 }
+
+export const emailSender = {
+  initEmailSender: initEmailSender,
+}

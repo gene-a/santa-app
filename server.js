@@ -9,6 +9,7 @@ const {
   santaController,
 } = require('./src/server/controllers/santa-controller,js')
 const { apiConfig } = require('./config/api-config.js')
+const { emailSender } = require('./src/server/services/email-sender.js')
 
 // Replaced deprecated body-parser
 app.use(express.json())
@@ -41,4 +42,7 @@ app.get('/', (request, response) => {
 // listen for requests :)
 const listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port)
+
+  // Initialize the email sender
+  emailSender.initEmailSender()
 })
