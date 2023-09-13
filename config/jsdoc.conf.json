@@ -1,0 +1,10 @@
+{
+  "source": {
+    "include": ["./src/server/services/",
+                "./src/server/data-access/",
+                "./src/server/controllers/"]
+  },
+  "opts": {
+    "destination": "docs/"
+  }
+}
