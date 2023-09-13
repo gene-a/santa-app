@@ -11,8 +11,10 @@ function App() {
   // State variables for input fields
   const [userId, setUserId] = React.useState("")
   const [wish, setWish] = React.useState("")
+  const [modalMessage, setModalMessage] = React.useState("")
   const [validationMessage, setErrorMessage] = React.useState("")
   const [isModalOpen, setIsModalOpen] = React.useState(false) 
+  const [modalDisplay, setModalDisplay] = React.useState({})
 
   // Validation constraint constants
   const maxWishLength = 100
@@ -20,18 +22,24 @@ function App() {
 
   // Trigger the modal
   const triggerModal = (message) => {
-    setErrorMessage(message)
+    setModalMessage(message)
     openModal()
   }
 
   // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true)
+    setModalDisplay({
+      display: 'block'
+    })
   };
 
   // Function to close the modal
   const closeModal = () => {
     setIsModalOpen(false)
+    setModalDisplay({
+      display: 'none'
+    })
   };
 
   const handleUserIdChange = (event) => {
@@ -82,7 +90,7 @@ function App() {
               };
 
               // Make a POST request to the wish endpoint
-              const response = await axios.post(window.location.origin + apiConfig.WISH_API.POST_WISH, wishData)
+              const response = await axios.post(apiConfig.WISH_API.POST_WISH, wishData)
               
               // Exit the function if all is good i.e. all conditions are passed and the wish is created
               modalMessage = `Wish successfully created! You must be excited ${userId}! We will be mailing santa soon!`
@@ -98,6 +106,19 @@ function App() {
       }
     }
   };
+
+  // Modal component
+  function ErrorModal({ message, modalDisplay, onClose }) {
+    return (
+      <div className="modal" style={modalDisplay}>
+        <div className="modal-content">
+          <span className="close" onClick={onClose}>&times;</span>
+          <p>{message}</p>
+          <button onClick={onClose}>OK</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -148,21 +169,8 @@ function App() {
       </div>
       {/* Display the modal if isModalOpen is true */}
       {isModalOpen && (
-        <ErrorModal message={validationMessage} onClose={closeModal} />
+        <ErrorModal message={modalMessage} modalDisplay={modalDisplay} onClose={closeModal} />
       )}
-    </div>
-  );
-}
-
-// Modal component
-function ErrorModal({ message, onClose }) {
-  return (
-    <div className="modal">
-      <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
-        <p>{message}</p>
-        <button onClick={onClose}>OK</button>
-      </div>
     </div>
   );
 }
