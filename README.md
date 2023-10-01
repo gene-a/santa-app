@@ -32,8 +32,3 @@
 	- I replaced the scripts.start value to run vite instead
 	- Removed client.js (I'm guessing this was default from glitch)
 		- From my understanding we now just have index.js which is bundled by Vite
-
-# Personal Notes:
-I am a C# developer and have used the .NET framework extensively. I have no specific JS framework that I use but am fine with Vanilla JS.
-I tried my best to translate the knowledge I have from ASP .NET to attempt to implement html rendering on the server side and serve up the API.
-It was quite enjoyable but this was quite a challenge as I had to learn Node and React in a day or so as the assignment was given during a time I was away from Tokyo. 
